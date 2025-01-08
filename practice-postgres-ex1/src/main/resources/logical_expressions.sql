@@ -60,3 +60,18 @@ SET is_above_avg_salary =
                 THEN TRUE
             ELSE FALSE
             END;
+
+
+ALTER TABLE employees
+DROP COLUMN is_above_avg_salary;
+
+SELECT * FROM employees;
+
+SELECT e1.id, e1.name, e1.salary, e1.department, (e1.salary > (
+    SELECT AVG(salary) FROM employees e2
+    WHERE e1.department = e2.department
+    GROUP BY e2.department
+) )
+FROM employees e1
+GROUP BY e1.id, e1.name, e1.salary, e1.department
+ORDER BY e1.id;
